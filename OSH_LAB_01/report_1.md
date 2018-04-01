@@ -47,34 +47,35 @@
 2. 当一个启动设备被发现，第一阶段引导程序被加载到 RAM 并执行，此引导程序的作用是加载第二阶段的引导程序
 3. 第二阶段引导程序被加载进 RAM 并执行，启动界面被显示，且 Linux 和可选初始磁盘（临时文件系统）被加载进内存。当镜像被加载以后，控制权从第二阶段引导程序传递到内核镜像，内核镜像先自解压和初始化。在这一步，第二阶段引导程序将检查系统硬件，枚举硬件设备，挂载主设备，加载必须的内核模块。
 4. 内核启动
-   - start_kernel 完成了内核的初始化，启动 init 进程
-     1. `debug_objects_early_init` 用于内核的对象调试
-     2. `boot_init_stack_canary()` 初始化 canary, 防止缓冲区溢出
-     3. `cgroup_init_early()` 初始化 cgroup 机制
-     4. `boot_cpu_init()` 初始化 CPU 的启动（见后文详细说明）
-     5. `page_address_init()` 初始化高端内存
-     6. `setup_arch(&command_line)` 初始化 CPU ，平台数据结构等具体信息
-     7. `mm_init_cpumask(&init_mm)` 初始化内存
-     8. `build_all_zerolists()` 初始化内存管理节点列表，便于内存管理的初始化
-     9. `page_alloc_init()` 初始化内存分配
-     10. `parse_early_param()` 获取命令行 early 最早执行的参数
-     11. `vfs_caches_init_early()` 初始化 vfs  cache 子系统
-     12. `trap_init` 初始化终端向量
-     13. `mm_init` 初始化内存管理
-     14. `sched_init` 初始化调度管理
-     15. `preempt_disabled()` 关闭优先权
-     16. `rcu_init` 初始化直接读、拷贝更新的锁机制
-     17. `trace_init` 初始化跟踪信息
-     18. `context_tracking_init()` 初始化
-     19. `init_IRQ` 初始化中断
-     20. `time_init()` 初始化高精度time
-     21. `softirq_init()` 初始化软中断
-     22. `local_irq_enablr()` 开中断
-     23. `console_init()` 初始化控制台（初始化控制台后 prink 就可以输出了，在之前是输出到缓冲里
-     24. `vfs_cache_init()` 初始化页表
-     25. `thread_stack_cache_init()` 初始化 thread cache 
-     26. `check_bugs()` 检错
-     27. `rest_init()`  创建并启动内核线程（见后文详细说明）
+
+   start_kernel 完成了内核的初始化，启动 init 进程
+   1. `debug_objects_early_init` 用于内核的对象调试
+   2. `boot_init_stack_canary()` 初始化 canary, 防止缓冲区溢出
+   3. `cgroup_init_early()` 初始化 cgroup 机制
+   4. `boot_cpu_init()` 初始化 CPU 的启动（见后文详细说明）
+   5. `page_address_init()` 初始化高端内存
+   6. `setup_arch(&command_line)` 初始化 CPU ，平台数据结构等具体信息
+   7. `mm_init_cpumask(&init_mm)` 初始化内存
+   8. `build_all_zerolists()` 初始化内存管理节点列表，便于内存管理的初始化
+   9. `page_alloc_init()` 初始化内存分配
+   10. `parse_early_param()` 获取命令行 early 最早执行的参数
+   11. `vfs_caches_init_early()` 初始化 vfs  cache 子系统
+   12. `trap_init` 初始化终端向量
+   13. `mm_init` 初始化内存管理
+   14. `sched_init` 初始化调度管理
+   15. `preempt_disabled()` 关闭优先权
+   16. `rcu_init` 初始化直接读、拷贝更新的锁机制
+   17. `trace_init` 初始化跟踪信息
+   18. `context_tracking_init()` 初始化
+   19. `init_IRQ` 初始化中断
+   20. `time_init()` 初始化高精度time
+   21. `softirq_init()` 初始化软中断
+   22. `local_irq_enablr()` 开中断
+   23. `console_init()` 初始化控制台（初始化控制台后 prink 就可以输出了，在之前是输出到缓冲里
+   24. `vfs_cache_init()` 初始化页表
+   25. `thread_stack_cache_init()` 初始化 thread cache 
+   26. `check_bugs()` 检错
+   27. `rest_init()`  创建并启动内核线程（见后文详细说明）
 
 ##boot_cpu_init 详述
 
