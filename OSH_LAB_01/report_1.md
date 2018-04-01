@@ -13,7 +13,7 @@
 
 实验环境：debian 9
 
-1. 安装 `htop`、`qemu`、`dpkg-dev`
+1. 安装 `qemu`虚拟机
 
 2. 使用`apt source linux-image-4.9.0-6-amd64`下载内核源代码 (linux-4.9.82)
 
