@@ -1,4 +1,4 @@
-#实验要求
+# 实验要求
 
 1. `git clone`已创建的仓库，在其中创建名为`hello_linux.sh`的文件，使其功能如下文所述，并使用`git commit`、`git push`等命令将修改后的仓库上传到GitHub。要求`hello_linux.sh`应为**可执行文件**，当以`./hello_linux.sh`这条命令执行它时，它应当向标准输出打印一行文本`Hello Linux`，并将标准输入的文本保存至当前目录下名为`output.txt`的文件
 2. 调试操作系统的启动过程
@@ -29,7 +29,7 @@
 
 8. 在`start_kernel()`、`boot_cpu_init()`、`rest_init()` 、`kernel_init()` 处设置断点，进行跟踪调试
 
-   ![](/home/smile/图片/设置断点及调试.png)
+   ![](./设置断点及调试.png)
 
 9. 参阅内核代码解析资料进一步了解和分析
 
@@ -37,7 +37,7 @@
 
 ##Linux启动过程跟踪
 
-![](/home/smile/图片/Linux 开机启动.png)
+![](./Linux 开机启动.png)
 
 ​                                                                         图一： linux启动过程示意
 
@@ -77,7 +77,7 @@
    26. `check_bugs()` 检错
    27. `rest_init()`  创建并启动内核线程（见后文详细说明）
 
-##boot_cpu_init 详述
+### boot_cpu_init 详述
 
 该函数主要为了通过掩码初始化每一个CPU。
 
@@ -86,21 +86,21 @@
 
 - 返回的ID表示我们处于哪一个CPU上, `boot_cpu_init` 函数设置了CPU的在线, 激活，设置- CPU掩码
 
-##rest_init 详述
+### rest_init 详述
 
-####创建三个线程：
+#### 创建三个线程：
 
 1. kernel_thread (kernel_init, NULL, CLONE_FS | CLONE_SIGHAND);创建1号进程 `kernel_init`
 2. 创建 `kthreadd` 线程，它是内核线程之父，管理调度其它的内核线程，内核线程列表由kthread_create_list全局链表管理
 3. 创建 `idle` 线程消耗空CPU时间
 
-####详细描述：
+#### 详细描述：
 
 1. `kernel_init kernel_init` 最开始作为进程被启动，之后它将读取根文件系统下的init程序，完成从内核态到用户态的转变，而这个init进程是所有用户态进程的父进程，生了大量的子进程，所以init进程将永远存在，其 PID 是1
 2. `kthreadd` 是内核守护进程，用于管理和调度其他内核线程，其 PID 为2。kthreadd 循环运行一个叫做 kthreadd 的函数，该函数的作用是运行 kthread_create_list 全局链表中维护的内核线程。调用kthread_create 创建 create_list 链表中；被执行过的 kthread 会从 kthread_create_list 链表中删除；且 kthreadd 会不断调用 cheduler 函数让出CPU。此线程不可关闭。
 3. 在没有其他进程执行时，执行 `idle`， 系统的空闲时间，其实就是指idle进程 的"运行时间"。
 
-#参考资料
+# 参考资料
 
 1. [QEMU and GDB in long mode - OSDev Wiki](https://wiki.osdev.org/QEMU_and_GDB_in_long_mode)
 2. [从源码中跟踪Linux Kernel的启动过程 « IT Dreamer](http://burningcodes.net/%E4%BB%8E%E6%BA%90%E7%A0%81%E4%B8%AD%E8%B7%9F%E8%B8%AAlinux-kernel%E7%9A%84%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B/)
